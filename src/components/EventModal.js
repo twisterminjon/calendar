@@ -86,18 +86,39 @@ export default function EventModal() {
           </span>
           <div>
             {selectedEvent && (
-              <span
-                onClick={() => {
-                  dispatchCalEvent({
-                    type: "delete",
-                    payload: selectedEvent,
-                  });
-                  setShowEventModal(false);
-                }}
-                className="material-icons-outlined text-gray-400 cursor-pointer"
-              >
-                delete
-              </span>
+              <>
+                {/* <span
+                  onClick={() => {
+                    dispatchCalEvent({
+                      type: "delete",
+                      payload: selectedEvent,
+                    });
+                    // dispatchCalEvent({
+                    //   type: "refresh",
+                    // });
+                    setShowEventModal(false);
+                  }}
+                  className="material-icons-outlined text-gray-400 cursor-pointer"
+                >
+                  delete
+                </span> */}
+                {/* <span
+                  onClick={() => {
+                    const storageEvents = localStorage.getItem("savedEvents");
+                    const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
+                    console.log(parsedEvents)
+                    dispatchCalEvent({
+                      type: "refresh",
+                      payload: parsedEvents
+                    });
+                    setShowEventModal(false);
+                  }}
+                  className="material-icons-outlined text-gray-400 cursor-pointer"
+                >
+                  delete
+                </span> */}
+              </>
+              
             )}
             <button onClick={() => setShowEventModal(false)}>
               <span className="material-icons-outlined text-gray-400">

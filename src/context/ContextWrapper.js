@@ -16,6 +16,8 @@ function savedEventsReducer(state, { type, payload }) {
       return state.map((evt) =>
         evt.id === payload.id ? payload : evt
       );
+    case "refresh":
+      return payload
     case "delete":
       return state.filter((evt) => evt.id !== payload.id);
     default:
@@ -24,58 +26,8 @@ function savedEventsReducer(state, { type, payload }) {
 }
 function initEvents() {
   const storageEvents = localStorage.getItem("savedEvents");
-  let data = []
-  let convertData = []
-  let convertData1 = []
-  axios.get(`https://api.garazh.corpberry.com/calendar/event/?get-only-data`)
-  .then(res => {
-    data = res.data;
 
-    console.log(data,"DATA")
-    data.forEach((element,ind) => {
-      // console.log(element.start?.substring(0,element.start?.indexOf(' ')))
-      const id = element.id
-      const start = Date.parse(element.start?.substring(0,element.start?.indexOf(' ')));
-      const labelName = element.label.name
-      if(element.end) { 
-        const end  = Date.parse(element.end?.substring(0,element.end?.indexOf(' ')));
-
-        const difference = Math.abs(end-start);
-        const days = difference/(1000 * 3600 * 24) + 1
-
-        console.log(days,ind)
-        if(days === 1) {
-          convertData.push({...element,"day":start})
-        }
-        else {
-          for(let i = 0;i<days;i++) {
-            convertData.push({...element,"day":start + 1000 * 3600 * 24 * i,"id":id+i})
-          }
-        }
-      }
-      else
-      {
-        convertData.push({...element,"day":start})
-      }
-    });
-    convertData1 = convertData.map((el) => {
-      const start = el.start
-      const end = el.end
-      const labelName = el.label.name
-      return {...el,
-        "startDay":Date.parse(start?.substring(0,start?.indexOf(' '))),
-        "startTime":start?.substring(start?.indexOf(' ')+1,start?.length),
-        "endDay":end ? Date.parse(end?.substring(0,end?.indexOf(' '))) : null,
-        "endTime":end ? end?.substring(end?.indexOf(' ')+1,end?.length) : null,
-        "label":labelName,
-        "title":"temp title"
-      }
-    })
-  })
   const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
-  // return convertData1
-  console.log(parsedEvents,"OLDDATA");
-  console.log(convertData1,"NEWDATA")
   return parsedEvents;
 }
 
@@ -91,6 +43,7 @@ export default function ContextWrapper(props) {
     [],
     initEvents
   );
+  const [refreshData,setRefreshData] = useState(false)
   
 
   const filteredEvents = useMemo(() => {
@@ -113,10 +66,7 @@ export default function ContextWrapper(props) {
     axios.get(`https://api.garazh.corpberry.com/calendar/event/?get-only-data`)
     .then(res => {
       data = res.data;
-  
-      console.log(data,"DATA")
       data.forEach((element,ind) => {
-        // console.log(element.start?.substring(0,element.start?.indexOf(' ')))
         const id = element.id
         const start = Date.parse(element.start?.substring(0,element.start?.indexOf(' ')));
         const labelName = element.label.name
@@ -126,7 +76,6 @@ export default function ContextWrapper(props) {
           const difference = Math.abs(end-start);
           const days = difference/(1000 * 3600 * 24) + 1
   
-          console.log(days,ind)
           if(days === 1) {
             convertData.push({...element,"day":start})
           }
@@ -155,10 +104,16 @@ export default function ContextWrapper(props) {
           "title":name
         }
       })
-      console.log("DISPATCH")
+      
       localStorage.setItem("savedEvents", JSON.stringify(convertData1));
+      return convertData1
+    }).then(data => {
+      dispatchCalEvent({
+        type: "refresh",
+        payload: data
+      });
     })
-  }, []);  
+  },[]);  
 
   useEffect(() => {
     setLabels((prevLabels) => {

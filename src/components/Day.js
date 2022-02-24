@@ -43,15 +43,17 @@ export default function Day({ day, rowIdx }) {
       </header>
       <div
         className="flex-1 cursor-pointer"
-        onClick={() => {
-          setDaySelected(day);
-          setShowEventModal(true);
-        }}
+        // onClick={() => {
+        //   console.log("SHOW EVENT MODAL",selectedEvent)
+        //   setDaySelected(day);
+        //   if(selectedEvent)
+        //     setShowEventModal(true);
+        // }}
       >
         {dayEvents.map((evt, idx) => (
           <div
             key={idx}
-            onClick={() => setSelectedEvent(evt)}
+            onClick={() => {setSelectedEvent(evt);setShowEventModal(true)}}
             // className={`bg-${labelsColor[labelsText.indexOf(evt.label)]}-200 p-1 mr-3 text-gray-600 text-sm rounded mb-1 truncate`}
             className={`bg-${getColor(evt.label)}-200 p-1 mr-3 text-gray-600 text-sm rounded mb-1 truncate`}
           >
