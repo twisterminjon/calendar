@@ -7,7 +7,7 @@ export default function Labels() {
 
   return (
     <React.Fragment>
-      <p className="text-gray-500 font-bold mt-10">Label</p>
+      <p className="text-gray-500 font-bold mt-10">Ярлыки</p>
       {labels.map(({ label: lbl, checked }, idx) => (
         <label key={idx} className="items-center mt-3 block">
           <input

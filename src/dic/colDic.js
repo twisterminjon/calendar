@@ -1,4 +1,5 @@
 export const labelsColor = [
+    "black",
     "indigo",
     "gray",
     "green",
@@ -16,6 +17,10 @@ export const labelsText = [
     "purple1",
   ];
   export  const labelsCol = [
+    {
+      "col": "black",
+      "lab": ""
+    },
     {
       "col": "indigo",
       "lab": "Актуальные"

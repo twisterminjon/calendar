@@ -31,7 +31,7 @@ export default function EventModal() {
     dispatchCalEvent,
     selectedEvent,
   } = useContext(GlobalContext);
-  console.log(selectedEvent)
+  // console.log(selectedEvent)
 
   // const [title, setTitle] = useState(
   //   selectedEvent ? selectedEvent.title : ""
@@ -42,7 +42,7 @@ export default function EventModal() {
   // console.log(labelsCol.find((lbl) => lbl.lab === selectedEvent.label).lab)
   const [selectedLabel, setSelectedLabel] = useState(
     selectedEvent
-      ? labelsCol.find((lbl) => lbl.lab === selectedEvent.label).lab
+      ? labelsCol.find((lbl) => lbl.lab === selectedEvent.label)?.lab
       : labelsCol[0].lab
   );
 
@@ -52,7 +52,8 @@ export default function EventModal() {
     startDay,
     startTime,
     endDay,
-    endTime,    
+    endTime,
+    duration   
   } = selectedEvent
   startDay = new Date(startDay);
   endDay = endDay ? new Date(endDay) : null;
@@ -76,7 +77,7 @@ export default function EventModal() {
   }
   
   // startDay = startDay.toString()
-  console.log(startDay)
+  // console.log(startDay)
   return (
     <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
       <form className="bg-white rounded-lg shadow-2xl w-1/2">
@@ -142,15 +143,21 @@ export default function EventModal() {
             <span className="material-icons-outlined text-gray-400">
               schedule
             </span>
-            <p className="col-span-11">{startDay.customFormat( "#DDD#, #MMM# #DD#" ) + " | " + startTime}</p>
+            <p className="col-span-11">{startDay.customFormat( "#DDD#, #MMM# #DD#" )}</p>
             {endDay && (
             <>
               <span className="material-icons-outlined text-gray-400"> 
                 schedule             
               </span>
-              <p className="col-span-11">{endDay.customFormat( "#DDD#, #MMM# #DD#" ) + " | " + endTime}</p>
+              <p className="col-span-11">{endDay.customFormat( "#DDD#, #MMM# #DD#" )}</p>
             </>)}
-
+            {duration && (
+            <>
+              <span className="material-icons-outlined text-gray-400"> 
+                schedule             
+              </span>
+              <p className="col-span-11">{duration}</p>
+            </>)}
             {/* <input
               type="text"
               name="duration"
@@ -167,7 +174,7 @@ export default function EventModal() {
               segment
             </span>
             <div className="col-span-11">
-              <SunEditor defaultValue={description} disable={true} hideToolbar={true} height="100%" />
+              <SunEditor defaultValue={description} hideToolbar={true} height="100%" />
             </div>
             {/* <input
               type="text"

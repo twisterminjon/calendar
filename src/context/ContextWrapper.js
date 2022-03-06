@@ -44,7 +44,7 @@ export default function ContextWrapper(props) {
     initEvents
   );
   const [refreshData,setRefreshData] = useState(false)
-  
+  // console.log(labels,"labels")
 
   const filteredEvents = useMemo(() => {
     return savedEvents.filter((evt) =>
@@ -95,13 +95,15 @@ export default function ContextWrapper(props) {
         const end = el.end
         const labelName = el.label.name
         const name = el.name
+        const duration = el.duration
         return {...el,
           "startDay":Date.parse(start?.substring(0,start?.indexOf(' '))),
           "startTime":start?.substring(start?.indexOf(' ')+1,start?.length),
           "endDay":end ? Date.parse(end?.substring(0,end?.indexOf(' '))) : null,
           "endTime":end ? end?.substring(end?.indexOf(' ')+1,end?.length) : null,
           "label":labelName,
-          "title":name
+          "title":name,
+          "duration":duration
         }
       })
       
