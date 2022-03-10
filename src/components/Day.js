@@ -55,7 +55,7 @@ export default function Day({ day, rowIdx }) {
             key={idx}
             onClick={() => {setSelectedEvent(evt);setShowEventModal(true)}}
             // className={`bg-${labelsColor[labelsText.indexOf(evt.label)]}-200 p-1 mr-3 text-gray-600 text-sm rounded mb-1 truncate`}
-            className={`bg-${getColor(evt.label)}-200 p-1 mr-3 text-gray-600 text-sm rounded mb-1 truncate`}
+            className={`bg-${getColor(evt.label[0])}-200 p-1 mr-3 text-gray-600 text-sm rounded mb-1 truncate`}
           >
             {evt.title}
           </div>

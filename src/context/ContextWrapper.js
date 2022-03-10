@@ -47,12 +47,24 @@ export default function ContextWrapper(props) {
   // console.log(labels,"labels")
 
   const filteredEvents = useMemo(() => {
-    return savedEvents.filter((evt) =>
-      labels
-        .filter((lbl) => lbl.checked)
-        .map((lbl) => lbl.label)
-        .includes(evt.label)
+    const filtEvents = 
+      savedEvents.filter((evt) => {
+        let flag = false;
+        const checkLables = labels.filter((lbl) => lbl.checked).map((lbl) => lbl.label)
+        evt.label?.forEach(label => {
+          if(checkLables.includes(label)) {
+            flag = true
+          }
+        })
+        return flag
+
+      // return labels
+      //   .filter((lbl) => lbl.checked)
+      //   .map((lbl) => lbl.label)
+      //   .includes(evt.label)
+    }
     );
+    return filtEvents
   }, [savedEvents, labels]);
 
   // useEffect(() => {
@@ -110,6 +122,15 @@ export default function ContextWrapper(props) {
       localStorage.setItem("savedEvents", JSON.stringify(convertData1));
       return convertData1
     }).then(data => {
+      // console.log(data)
+      // const newData = data.slice(0,3)
+      // newData[0].label = ["Актуальные","Школьнику"]
+      // newData[1].label = ["Студенту","Ученому"]
+      // newData[2].label = ["Студенту","МСП"]
+      // newData[0].label = "Актуальные"
+      // newData[1].label = "Студенту"
+      // newData[2].label = "Студенту"
+      // console.log(data.slice(0,1))
       dispatchCalEvent({
         type: "refresh",
         payload: data
@@ -118,8 +139,12 @@ export default function ContextWrapper(props) {
   },[]);  
 
   useEffect(() => {
+    const labelsArr = new Set();
     setLabels((prevLabels) => {
-      return [...new Set(savedEvents.map((evt) => evt.label))].map(
+      savedEvents.forEach(evt=>{
+        evt.label?.forEach(lbl=>labelsArr.add(lbl))
+      })
+      return [...labelsArr].map(
         (label) => {
           const currentLabel = prevLabels.find(
             (lbl) => lbl.label === label
@@ -130,7 +155,23 @@ export default function ContextWrapper(props) {
           };
         }
       );
+
+      // return [...new Set(savedEvents.map((evt) => evt.label))].map(
+      //   (label) => {
+      //     const currentLabel = prevLabels.find(
+      //       (lbl) => lbl.label === label
+      //     );
+      //     return {
+      //       label,
+      //       checked: currentLabel ? currentLabel.checked : true,
+      //     };
+      //   }
+      // );
+
+
     });
+
+    
   }, [savedEvents]);
 
   useEffect(() => {
