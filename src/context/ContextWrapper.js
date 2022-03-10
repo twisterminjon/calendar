@@ -122,8 +122,13 @@ export default function ContextWrapper(props) {
       localStorage.setItem("savedEvents", JSON.stringify(convertData1));
       return convertData1
     }).then(data => {
-      // console.log(data)
-      // const newData = data.slice(0,3)
+      const newData = data.map(el=>{
+        const newEl = el
+        if(el.label===undefined) {
+          newEl.label = ['']
+        }
+        return newEl
+      } )
       // newData[0].label = ["Актуальные","Школьнику"]
       // newData[1].label = ["Студенту","Ученому"]
       // newData[2].label = ["Студенту","МСП"]
@@ -133,7 +138,7 @@ export default function ContextWrapper(props) {
       // console.log(data.slice(0,1))
       dispatchCalEvent({
         type: "refresh",
-        payload: data
+        payload: newData
       });
     })
   },[]);  
