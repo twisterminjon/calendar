@@ -105,7 +105,7 @@ export default function ContextWrapper(props) {
       convertData1 = convertData.map((el) => {
         const start = el.start
         const end = el.end
-        const labelName = el.label.name
+        const label = el.label.map((lbl)=> lbl.name)
         const name = el.name
         const duration = el.duration
         return {...el,
@@ -113,7 +113,7 @@ export default function ContextWrapper(props) {
           "startTime":start?.substring(start?.indexOf(' ')+1,start?.length),
           "endDay":end ? Date.parse(end?.substring(0,end?.indexOf(' '))) : null,
           "endTime":end ? end?.substring(end?.indexOf(' ')+1,end?.length) : null,
-          "label":labelName,
+          "label":label,
           "title":name,
           "duration":duration
         }
