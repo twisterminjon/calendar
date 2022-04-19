@@ -21,9 +21,9 @@ export default function CalendarHeader() {
   }
   return (
     <header className="px-4 py-2 flex items-center">
+      <img src={dgtu} className="mr-3 w-12 h-12 "/>
       <img src={logo} alt="calendar" className="mr-2 w-9 h-12" />
       <img src={airo} className="mr-2 w-48 h-12 "/>
-      <img src={dgtu} className="mr-3 w-12 h-12 "/>
       <h1 className="mr-10 text-xl text-gray-500 fond-bold">
         Календарь
       </h1>
